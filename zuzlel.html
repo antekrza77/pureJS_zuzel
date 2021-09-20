@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <title>zuzel</title>
+        <style>
+                #div {
+                        margin: 0 auto;
+                }
+
+                #canvas {
+                        background-image: url("a.jpg");
+                        margin: 0 auto;
+                }
+
+                p {
+                        position: absolute;
+                        top: 40px;
+                        left: 700px;
+                }
+        </style>
+
+
+</head>
+
+<body>
+        <div id="div">
+                <p>KLAWISZ STERUJĄCY:
+                        <em>lewa strzałka</em><br>(Jeśli nie wyświetlają się patterny - odśwież storne F5)
+                </p>
+                <canvas id="canvas" width="600" height="300" style="border:solid 1px;"></canvas>
+                <br/>
+
+
+        </div>
+
+
+
+        <script>
+                document.addEventListener("DOMContentLoaded", function (event) {
+                        var canvas = document.getElementById("canvas");
+                        var ctx = canvas.getContext("2d");
+                        var image = new Image();
+
+
+                        ctx.beginPath();
+                        ctx.arc(150, 150, 150, 0.5 * Math.PI, 1.5 * Math.PI)
+                        ctx.arc(450, 150, 150, 1.5 * Math.PI, 0.5 * Math.PI, false)
+                        ctx.closePath()
+                        ctx.fillStyle = "rgb(255, 255, 255)"
+                        ctx.lineWidth = 2
+                        ctx.stroke()
+                        ctx.fill()
+
+
+                        ctx.beginPath()
+                        ctx.arc(150, 150, 50, 0.5 * Math.PI, 1.5 * Math.PI)
+                        ctx.arc(450, 150, 50, 1.5 * Math.PI, 0.5 * Math.PI, false)
+                        ctx.closePath()
+                        image.src = "g.jpg";
+                        ctx.fillStyle = ctx.createPattern(image, "repeat");
+                        ctx.lineWidth = 2
+                        ctx.stroke()
+                        ctx.fill()
+
+
+
+                        ctx.beginPath()
+                        ctx.moveTo(300, 200)
+                        ctx.lineTo(300, 300)
+                        ctx.strokeStyle = "rgb(255,0,0)"
+                        ctx.stroke()
+                        ctx.closePath()
+
+                        ctx.strokeStyle = "rgb(0,0,255)" // kolor linii żużla
+
+
+                        //--start
+
+                        var lineLength = 1;
+                        var x = 300
+                        var y = 250
+                        var x2 = 300
+                        var y2 = 275
+                        var angle = 0
+                        player = true
+
+
+                        dx = lineLength * Math.sin(angle)
+                        dy = lineLength * Math.cos(angle)
+                        pp = false;
+
+
+
+                        document.addEventListener("keydown", function (event) {
+                                if (event.keyCode == 37) {
+                                        pp = true;
+                                }
+
+                        })
+                        document.addEventListener("keyup", function (event) {
+                                if (event.keyCode == 37) {
+                                        pp = false;
+                                }
+
+                        })
+
+
+
+
+
+                        var game = setInterval(function () {
+                                if (player) {
+                                        if (pp == true) {
+                                                angle = angle - (1.75 * Math.PI) / 180
+                                        }
+
+                                        ctx.beginPath()
+                                        ctx.moveTo(x, y)
+
+
+
+                                        dx = lineLength * Math.cos(angle)
+                                        dy = lineLength * Math.sin(angle)
+
+                                        ctx.lineTo(x + dx, y + dy)
+
+                                        x += dx
+                                        y += dy
+                                        ctx.stroke()
+                                        ctx.beginPath();
+                                        ctx.arc(150, 150, 150, 0.5 * Math.PI, 1.5 *
+                                                Math.PI)
+                                        ctx.arc(450, 150, 150, 1.5 * Math.PI, 0.5 *
+                                                Math.PI, false)
+                                        ctx.closePath()
+
+                                        if (ctx.isPointInPath(x, y) == false) {
+                                                alert("KOLIZJA!")
+                                                player = false
+
+
+                                        }
+
+                                        ctx.beginPath()
+                                        ctx.arc(150, 150, 50, 0.5 * Math.PI, 1.5 * Math
+                                                .PI)
+                                        ctx.arc(450, 150, 50, 1.5 * Math.PI, 0.5 * Math
+                                                .PI, false)
+                                        ctx.closePath()
+
+                                        if (ctx.isPointInPath(x, y) == true) {
+                                                console.log("end")
+                                                player = false
+                                                alert("KOLIZJA!")
+                                        }
+                                }
+
+
+
+
+                        }, 8)
+
+                })
+        </script>
+</body>
+
+</html>
